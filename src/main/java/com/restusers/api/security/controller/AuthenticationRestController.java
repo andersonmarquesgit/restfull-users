@@ -44,7 +44,7 @@ public class AuthenticationRestController {
 	@Autowired
 	private UserService userService;
 	
-	@PostMapping(value = "/api/auth")
+	@PostMapping(value = "/signin")
 	@ApiOperation(value = "Autenticação de usuário", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(@ApiResponse(code = 200, message = "Success", response = CurrentUser.class, 
 		responseHeaders = @ResponseHeader(name = "Location", description = "token", response = String.class)))

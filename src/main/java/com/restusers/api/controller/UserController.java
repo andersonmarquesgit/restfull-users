@@ -36,7 +36,7 @@ import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.ResponseHeader;
 
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/signup")
 @CrossOrigin(origins = "*") // Permitindo o acesso de qualquer IP, porta, etc.
 @Api(value = "User")
 public class UserController {
