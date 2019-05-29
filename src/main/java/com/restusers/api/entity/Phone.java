@@ -10,6 +10,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -27,13 +30,15 @@ public class Phone {
 	private Long number;
 	
 	@Column(name = "area_code")
+	@JsonProperty("area_code")
 	private int areaCode;
 	
-	@Size(min = 6)
 	@Column(name = "country_code")
+	@JsonProperty("country_code")
 	private String countryCode;
 	
 	@ManyToOne
     @JoinColumn(name = "fk_tb_user", nullable = false)
+	@JsonIgnore
     private User user;
 }

@@ -49,7 +49,7 @@ public class User {
 	
 	private ProfileEnum profile;
 	
-	 @OneToMany(mappedBy = "user", cascade = {CascadeType.ALL})
+	 @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST})
 	 private List<Phone> phones;
 
 }
