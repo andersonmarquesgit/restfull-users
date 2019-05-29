@@ -36,7 +36,7 @@ import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.ResponseHeader;
 
 @RestController
-@RequestMapping("/signup")
+@RequestMapping("/user")
 @CrossOrigin(origins = "*") // Permitindo o acesso de qualquer IP, porta, etc.
 @Api(value = "User")
 public class UserController {
@@ -84,6 +84,14 @@ public class UserController {
 	private void validateCreateUser(User user, BindingResult result) {
 		if (user.getEmail() == null) {
 			result.addError(new ObjectError("User", "Email no information"));
+		}
+		
+		if (user.getFirstName() == null) {
+			result.addError(new ObjectError("User", "First name no information"));
+		}
+		
+		if (user.getLastName() == null) {
+			result.addError(new ObjectError("User", "Last name no information"));
 		}
 	}
 
