@@ -1,5 +1,6 @@
 package com.restusers.api.entity;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -14,6 +15,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.restusers.api.enums.ProfileEnum;
 
 import lombok.Getter;
@@ -47,9 +49,17 @@ public class User {
 	@Column(name = "password", unique = true)
 	private String password;
 	
+	@JsonIgnore
 	private ProfileEnum profile;
 	
-	 @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST})
-	 private List<Phone> phones;
+	@OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST})
+	private List<Phone> phones;
 
+	@JsonIgnore
+	@Column(name = "created_at")
+	private LocalDate createdAt;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "user")
+	private List<LogUser> logUser;
 }

@@ -1,5 +1,7 @@
 package com.restusers.api.controller;
 
+import java.time.LocalDate;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,6 +70,7 @@ public class UserController {
 				return ResponseEntity.badRequest().body(response);
 			}
 			user.setPassword(this.passwordEncoder.encode(user.getPassword()));
+			user.setCreatedAt(LocalDate.now());
 			User userPersisted = this.userService.createOrUpdate(user);
 			response.setData(userPersisted);
 		} catch (DuplicateKeyException dE) {

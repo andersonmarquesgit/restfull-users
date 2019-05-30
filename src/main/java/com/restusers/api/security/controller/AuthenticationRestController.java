@@ -1,9 +1,14 @@
 package com.restusers.api.security.controller;
 
+import java.time.LocalDate;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -13,16 +18,21 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.restusers.api.entity.LogUser;
 import com.restusers.api.entity.User;
 import com.restusers.api.enums.ProfileEnum;
+import com.restusers.api.response.Response;
 import com.restusers.api.security.jwt.JwtAuthenticationRequest;
 import com.restusers.api.security.jwt.JwtTokenUtil;
 import com.restusers.api.security.model.CurrentUser;
+import com.restusers.api.service.LogUserService;
 import com.restusers.api.service.UserService;
+import com.restusers.api.to.UserTO;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -46,6 +56,9 @@ public class AuthenticationRestController {
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private LogUserService logUserService;
 	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
@@ -74,6 +87,8 @@ public class AuthenticationRestController {
 			final String token = jwtTokenUtil.generateToken(userDetails);
 			final User user = userService.findByEmail(authenticationRequest.getEmail());
 			user.setPassword(null);
+			
+			this.logUserService.registerLogUser(new LogUser(user, LocalDate.now()));
 			return ResponseEntity.ok(new CurrentUser(token, user));
 		} catch (Exception e) {
 			return new ResponseEntity<>("Invalid e-mail or password", HttpStatus.BAD_REQUEST);
@@ -110,6 +125,7 @@ public class AuthenticationRestController {
 			userRequest.setPassword(this.passwordEncoder.encode(passwordRequest));
 			userRequest.setProfile(ProfileEnum.ROLE_USER);
 			userRequest.getPhones().forEach(p -> p.setUser(userRequest));
+			userRequest.setCreatedAt(LocalDate.now());
 			User userPersisted = this.userService.createOrUpdate(userRequest);
 	
 			final Authentication authentication = authenticationManager.authenticate(
@@ -128,6 +144,33 @@ public class AuthenticationRestController {
 		} catch (Exception e) {
 			return new ResponseEntity<>("Invalid e-mail or password", HttpStatus.BAD_REQUEST);
 		}
+	}
+	
+	@GetMapping(value = "/me")
+	@PreAuthorize("hasAnyRole('USER')") // Autorização com base no perfil. Nesse caso apenas USER pode consultar suas informações.
+	@ApiOperation(value = "Consulta de informações do usuário pelo token")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = UserTO.class),
+			@ApiResponse(code = 401, message = "Unauthorized"), @ApiResponse(code = 403, message = "Forbidden"),
+			@ApiResponse(code = 404, message = "Not Found"), @ApiResponse(code = 500, message = "Failure") })
+	public ResponseEntity<Response<UserTO>> update(HttpServletRequest request){
+		Response<UserTO> response = new Response<UserTO>();
+		
+		String authToken = request.getHeader("Authorization");
+		String username = jwtTokenUtil.getUserNameFromToken(authToken);
+		User user = userService.findByEmail(username);
+		
+		UserTO userTO = new UserTO();
+		userTO.setFirstName(user.getFirstName());
+		userTO.setLastName(user.getLastName());
+		userTO.setEmail(user.getEmail());
+		userTO.setPhones(user.getPhones());
+		userTO.setCreatedAt(user.getCreatedAt());
+		userTO.setLastLogin(this.logUserService.findLastLogin(user));
+		
+		response.setData(userTO);
+		
+		return ResponseEntity.ok(response);
+		
 	}
 	
 	private boolean validateCreateUser(User user) {
