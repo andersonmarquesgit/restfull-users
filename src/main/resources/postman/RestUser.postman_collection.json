@@ -1,0 +1,551 @@
+{
+	"info": {
+		"_postman_id": "637faf09-d0f5-4728-b176-c2184e1bca70",
+		"name": "RestUser",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Local",
+			"item": [
+				{
+					"name": "User",
+					"item": [
+						{
+							"name": "Signin",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "4909945d-a7e4-4aa9-bc9c-d79c96f0fb6d",
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);\r",
+											"postman.setEnvironmentVariable(\"token\", jsonData.token);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"email\": \"user@pitang.com\",\n\t\"password\": \"123456\"\n}"
+								},
+								"url": {
+									"raw": "http://localhost:8888/signin",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8888",
+									"path": [
+										"signin"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Me",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8888/me",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8888",
+									"path": [
+										"me"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Signup",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "4909945d-a7e4-4aa9-bc9c-d79c96f0fb6d",
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);\r",
+											"postman.setEnvironmentVariable(\"token\", jsonData.token);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"email\": \"user34@pitang.com\",\n\t\"password\": \"123456\",\n\t\"firstName\": \"Anderson\",\n\t\"lastName\": \"Marques\",\n\t\"phones\" : [\n\t\t{\n\t\t\"number\" : 988887888 ,\n\t\t\"area_code\" : 81 ,\n\t\t\"country_code\" : \"+55\"\n\t\t}\n\t]\n}"
+								},
+								"url": {
+									"raw": "http://localhost:8888/signup",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8888",
+									"path": [
+										"signup"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create User",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"email\": \"user11@pitang.com\",\n\t\"password\": \"123456\",\n\t\"profile\": \"ROLE_USER\"\n}"
+								},
+								"url": {
+									"raw": "http://localhost:8888/user",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8888",
+									"path": [
+										"user"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update User",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbkByZW50YWNhci5jb20iLCJjcmVhdGVkIjoxNTU1MjQ4Nzg4NTkwLCJleHAiOjE1NTU4NTM1ODh9.fWXdK-2Q677ieSl1sjOW65STJSpp9XLZNdo1P8Sya_vxP_QwCr9vX-2xGbGwf-prVYe82kmE5UjIPCxKFR8rzA"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"id\": \"2\",\n\t\"email\": \"user12@pitang.com\",\n\t\"password\": \"123456\",\n\t\"profile\": \"ROLE_USER\"\n}"
+								},
+								"url": {
+									"raw": "http://localhost:8888/user",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8888",
+									"path": [
+										"user"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Find One User By Id",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8888/user/2",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8888",
+									"path": [
+										"user",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Find Users Pages",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8888/user/0/10",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8888",
+									"path": [
+										"user",
+										"0",
+										"10"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete User",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": {
+									"raw": "http://localhost:8888/user/4",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8888",
+									"path": [
+										"user",
+										"4"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				}
+			]
+		},
+		{
+			"name": "Heroku",
+			"item": [
+				{
+					"name": "User",
+					"item": [
+						{
+							"name": "Signin",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "4909945d-a7e4-4aa9-bc9c-d79c96f0fb6d",
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);\r",
+											"postman.setEnvironmentVariable(\"token\", jsonData.token);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"email\": \"user@pitang.com\",\n\t\"password\": \"123456\"\n}"
+								},
+								"url": {
+									"raw": "https://restuser.herokuapp.com/signin",
+									"protocol": "https",
+									"host": [
+										"restuser",
+										"herokuapp",
+										"com"
+									],
+									"path": [
+										"signin"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Me",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "https://restuser.herokuapp.com/me",
+									"protocol": "https",
+									"host": [
+										"restuser",
+										"herokuapp",
+										"com"
+									],
+									"path": [
+										"me"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Signup",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "4909945d-a7e4-4aa9-bc9c-d79c96f0fb6d",
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);\r",
+											"postman.setEnvironmentVariable(\"token\", jsonData.token);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"email\": \"user2@pitang.com\",\n\t\"password\": \"123456\",\n\t\"firstName\": \"Anderson\",\n\t\"lastName\": \"Marques\",\n\t\"phones\" : [\n\t\t{\n\t\t\"number\" : 988887888 ,\n\t\t\"area_code\" : 81 ,\n\t\t\"country_code\" : \"+55\"\n\t\t}\n\t]\n}"
+								},
+								"url": {
+									"raw": "https://restuser.herokuapp.com/signup",
+									"protocol": "https",
+									"host": [
+										"restuser",
+										"herokuapp",
+										"com"
+									],
+									"path": [
+										"signup"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create User",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"email\": \"user11@pitang.com\",\n\t\"password\": \"123456\",\n\t\"profile\": \"ROLE_USER\"\n}"
+								},
+								"url": {
+									"raw": "https://restuser.herokuapp.com/user",
+									"protocol": "https",
+									"host": [
+										"restuser",
+										"herokuapp",
+										"com"
+									],
+									"path": [
+										"user"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update User",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbkByZW50YWNhci5jb20iLCJjcmVhdGVkIjoxNTU1MjQ4Nzg4NTkwLCJleHAiOjE1NTU4NTM1ODh9.fWXdK-2Q677ieSl1sjOW65STJSpp9XLZNdo1P8Sya_vxP_QwCr9vX-2xGbGwf-prVYe82kmE5UjIPCxKFR8rzA"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"id\": \"2\",\n\t\"email\": \"user12@pitang.com\",\n\t\"password\": \"123456\",\n\t\"profile\": \"ROLE_USER\"\n}"
+								},
+								"url": {
+									"raw": "https://restuser.herokuapp.com/user",
+									"protocol": "https",
+									"host": [
+										"restuser",
+										"herokuapp",
+										"com"
+									],
+									"path": [
+										"user"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Find One User By Id",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}"
+									}
+								],
+								"url": {
+									"raw": "https://restuser.herokuapp.com/user/2",
+									"protocol": "https",
+									"host": [
+										"restuser",
+										"herokuapp",
+										"com"
+									],
+									"path": [
+										"user",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Find Users Pages",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}"
+									}
+								],
+								"url": {
+									"raw": "https://restuser.herokuapp.com/user/0/10",
+									"protocol": "https",
+									"host": [
+										"restuser",
+										"herokuapp",
+										"com"
+									],
+									"path": [
+										"user",
+										"0",
+										"10"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete User",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": {
+									"raw": "https://restuser.herokuapp.com/user/4",
+									"protocol": "https",
+									"host": [
+										"restuser",
+										"herokuapp",
+										"com"
+									],
+									"path": [
+										"user",
+										"4"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				}
+			]
+		}
+	]
+}
