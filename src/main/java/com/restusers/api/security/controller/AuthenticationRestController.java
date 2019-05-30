@@ -1,6 +1,6 @@
 package com.restusers.api.security.controller;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.restusers.api.entity.LogUser;
+import com.restusers.api.entity.Log;
 import com.restusers.api.entity.User;
 import com.restusers.api.enums.ProfileEnum;
 import com.restusers.api.response.Response;
@@ -86,9 +86,11 @@ public class AuthenticationRestController {
 			final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getEmail());
 			final String token = jwtTokenUtil.generateToken(userDetails);
 			final User user = userService.findByEmail(authenticationRequest.getEmail());
-			user.setPassword(null);
 			
-			this.logUserService.registerLogUser(new LogUser(user, LocalDate.now()));
+			Log logUser = new Log();
+			logUser.setUserId(user.getId());
+			logUser.setLastLogin(LocalDateTime.now());
+			this.logUserService.registerLogUser(logUser);
 			return ResponseEntity.ok(new CurrentUser(token, user));
 		} catch (Exception e) {
 			return new ResponseEntity<>("Invalid e-mail or password", HttpStatus.BAD_REQUEST);
@@ -125,7 +127,7 @@ public class AuthenticationRestController {
 			userRequest.setPassword(this.passwordEncoder.encode(passwordRequest));
 			userRequest.setProfile(ProfileEnum.ROLE_USER);
 			userRequest.getPhones().forEach(p -> p.setUser(userRequest));
-			userRequest.setCreatedAt(LocalDate.now());
+			userRequest.setCreatedAt(LocalDateTime.now());
 			User userPersisted = this.userService.createOrUpdate(userRequest);
 	
 			final Authentication authentication = authenticationManager.authenticate(
@@ -165,7 +167,7 @@ public class AuthenticationRestController {
 		userTO.setEmail(user.getEmail());
 		userTO.setPhones(user.getPhones());
 		userTO.setCreatedAt(user.getCreatedAt());
-		userTO.setLastLogin(this.logUserService.findLastLogin(user));
+		userTO.setLastLogin(this.logUserService.findLastLogin(user.getId()));
 		
 		response.setData(userTO);
 		

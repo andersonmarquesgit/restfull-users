@@ -4,14 +4,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.restusers.api.entity.LogUser;
-import com.restusers.api.entity.User;
+import com.restusers.api.entity.Log;
 
-public interface LogUserRepository extends JpaRepository<LogUser, String> {
+public interface LogUserRepository extends JpaRepository<Log, String> {
 
-	@Query("select l from LogUser l " + 
+	@Query("select l from Log l " + 
 			"where l.lastLogin in " + 
 			"    ( select max(lg.lastLogin) " + 
-			"      from LogUser lg where lg.user = :user )")
-	LogUser findLastLogin(@Param(value = "user") User user);
+			"      from Log lg where lg.userId = :userId )")
+	Log findLastLogin(@Param(value = "userId") String userId);
 }

@@ -1,6 +1,6 @@
 package com.restusers.api.entity;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -56,10 +56,7 @@ public class User {
 	private List<Phone> phones;
 
 	@JsonIgnore
-	@Column(name = "created_at")
-	private LocalDate createdAt;
+	@Column(name = "created_at", columnDefinition = "TIMESTAMP")
+	private LocalDateTime createdAt;
 	
-	@JsonIgnore
-	@OneToMany(mappedBy = "user")
-	private List<LogUser> logUser;
 }

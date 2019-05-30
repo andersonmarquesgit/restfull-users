@@ -1,13 +1,12 @@
 package com.restusers.api.service;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
-import com.restusers.api.entity.LogUser;
-import com.restusers.api.entity.User;
+import com.restusers.api.entity.Log;
 
 public interface LogUserService {
 
-	LogUser registerLogUser(LogUser logUser);
+	Log registerLogUser(Log logUser);
 	
-	LocalDate findLastLogin(User user);
+	LocalDateTime findLastLogin(String userId);
 }

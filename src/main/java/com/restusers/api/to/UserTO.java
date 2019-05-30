@@ -1,6 +1,6 @@
 package com.restusers.api.to;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.restusers.api.entity.Phone;
@@ -16,6 +16,6 @@ public class UserTO {
 	private String lastName;
 	private String email;
 	private List<Phone> phones;
-	private LocalDate createdAt;
-	private LocalDate lastLogin;
+	private LocalDateTime createdAt;
+	private LocalDateTime lastLogin;
 }

@@ -1,6 +1,6 @@
 package com.restusers.api.controller;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -70,7 +70,7 @@ public class UserController {
 				return ResponseEntity.badRequest().body(response);
 			}
 			user.setPassword(this.passwordEncoder.encode(user.getPassword()));
-			user.setCreatedAt(LocalDate.now());
+			user.setCreatedAt(LocalDateTime.now());
 			User userPersisted = this.userService.createOrUpdate(user);
 			response.setData(userPersisted);
 		} catch (DuplicateKeyException dE) {
